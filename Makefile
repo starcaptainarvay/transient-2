@@ -4,7 +4,7 @@ LDFLAGS = -lglfw -lvulkan -lavformat -lavcodec -lavutil -lswscale
 
 SRCS = src/vulkan_utils.c src/video_player.c src/video_manager.c src/obrien.c
 OBJS = $(SRCS:.c=.o)
-EXEC = Transient
+EXEC = Transient.exe
 
 all: $(EXEC)
 

@@ -1,10 +1,13 @@
 .vscode
+*.vscode
+.vscode/
 
-Transient
 *.exe
+Transient.exe
 
 *.o
 src/*.o
 
 *.mp4
-media/.*mp4
+media/*.mp4
+/media/*.mp4
