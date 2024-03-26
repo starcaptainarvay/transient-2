@@ -1,0 +1,10 @@
+.vscode
+
+Transient
+*.exe
+
+*.o
+src/*.o
+
+*.mp4
+media/.*mp4
