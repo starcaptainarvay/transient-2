@@ -5,6 +5,8 @@
         "vulkan.h": "c",
         "video_player.h": "c",
         "obrien.h": "c",
-        "video_manager.h": "c"
+        "video_manager.h": "c",
+        "cstdlib": "c",
+        "stdlib.h": "c"
     }
 }
