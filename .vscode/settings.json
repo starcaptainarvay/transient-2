@@ -7,6 +7,7 @@
         "obrien.h": "c",
         "video_manager.h": "c",
         "cstdlib": "c",
-        "stdlib.h": "c"
+        "stdlib.h": "c",
+        "stdexcept": "cpp"
     }
 }

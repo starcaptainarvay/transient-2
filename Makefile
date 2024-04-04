@@ -1,19 +1,24 @@
-CC = gcc
-CFLAGS = -Wall -Wextra -I.
-LDFLAGS = -lglfw -lvulkan -lavformat -lavcodec -lavutil -lswscale
+CXX = g++
+CXXFLAGS = -std=c++17 -Wall -Wextra
+LDFLAGS = -lvulkan -lglfw
 
-# SRCS = src/vulkan_window.c src/video_player.c src/video_manager.c src/obrien.c
-SRCS = src/vulkan_window.c src/obrien.c
-OBJS = $(SRCS:.c=.o)
-EXEC = Transient.exe
+SRC_DIR = src
+BUILD_DIR = build
+TARGET = Transient.exe
 
-all: $(EXEC)
+SRCS := $(wildcard $(SRC_DIR)/*.cpp)
+OBJS := $(SRCS:$(SRC_DIR)/%.cpp=$(BUILD_DIR)/%.o)
 
-$(EXEC): $(OBJS)
-	$(CC) $(OBJS) -o $@ $(LDFLAGS)
+.PHONY: all clean
 
-%.o: %.c
-	$(CC) -c $(CFLAGS) $< -o $@
+all: $(BUILD_DIR)/$(TARGET)
+
+$(BUILD_DIR)/$(TARGET): $(OBJS)
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
+	$(RM) -r build/main.o
+
+$(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp
+	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
 clean:
-	rm -f $(OBJS) $(EXEC)
+	$(RM) -r $(BUILD_DIR)
