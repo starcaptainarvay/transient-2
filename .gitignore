@@ -5,6 +5,10 @@
 *.exe
 Transient.exe
 
+build/*.o
+build/*.exe
+build
+
 *.o
 src/*.o
 
