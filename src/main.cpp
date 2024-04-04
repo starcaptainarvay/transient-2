@@ -5,6 +5,8 @@
 #include <stdexcept>
 #include <cstdlib>
 
+#include "vulkan_pipeline_utils.h"
+
 class TransientApplication {
     GLFWwindow* window;
 
@@ -17,6 +19,7 @@ class TransientApplication {
         }
 
     private:
+        VkInstance instance;
         void initWindow() {
             glfwInit();
 
@@ -41,7 +44,7 @@ class TransientApplication {
         }
 
         void initVulkan() {
-
+            createInstance(&instance);
         }
 
         void mainLoop() {
