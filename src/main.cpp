@@ -56,7 +56,7 @@ class TransientApplication {
             // printf("Hello world");
 
             VkPhysicalDeviceProperties props = getPhysicalDeviceProperties(&physicalDevice);            
-            printPhysicalDeviceInfo(props);
+            printPhysicalDeviceFeatures(props, getPhysicalDeviceFeatures(&physicalDevice));
         }
 
         void mainLoop() {

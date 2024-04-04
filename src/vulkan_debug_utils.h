@@ -4,7 +4,10 @@
 #include <vulkan/vulkan.h>
 
 VkPhysicalDeviceProperties getPhysicalDeviceProperties(VkPhysicalDevice *pDevice);
+VkPhysicalDeviceFeatures getPhysicalDeviceFeatures(VkPhysicalDevice *pDevice);
+
 void printPhysicalDeviceInfo(VkPhysicalDevice *pDevice);
 void printPhysicalDeviceInfo(VkPhysicalDeviceProperties props);
+void printPhysicalDeviceFeatures(VkPhysicalDeviceProperties props, VkPhysicalDeviceFeatures features);
 
 #endif
