@@ -4,5 +4,6 @@
 #include <vulkan/vulkan.h>
 
 void createInstance(VkInstance *pInstance);
+void pickPhysicalDevice(VkInstance *pInstance, VkPhysicalDevice *pDevice);
 
 #endif

@@ -8,6 +8,8 @@
         "video_manager.h": "c",
         "cstdlib": "c",
         "stdlib.h": "c",
-        "stdexcept": "cpp"
+        "stdexcept": "cpp",
+        "iostream": "cpp",
+        "vulkan_debug_utils.h": "c"
     }
 }

@@ -6,20 +6,26 @@
 #include <cstdlib>
 
 #include "vulkan_pipeline_utils.h"
+#include "vulkan_debug_utils.h"
 
 class TransientApplication {
-    GLFWwindow* window;
-
     public:
         void run() {
+            printf("Initializing window.\n");
             initWindow();
+            printf("Initializing Vulkan.\n");
             initVulkan();
+            printf("Initializing Transient.\n");
             mainLoop();
+            printf("Cleaning up Transient.");
             cleanup();
         }
 
     private:
+        GLFWwindow* window;
+        VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
         VkInstance instance;
+        
         void initWindow() {
             glfwInit();
 
@@ -45,6 +51,12 @@ class TransientApplication {
 
         void initVulkan() {
             createInstance(&instance);
+            pickPhysicalDevice(&instance, &physicalDevice);
+
+            // printf("Hello world");
+
+            VkPhysicalDeviceProperties props = getPhysicalDeviceProperties(&physicalDevice);            
+            printPhysicalDeviceInfo(props);
         }
 
         void mainLoop() {
@@ -54,6 +66,7 @@ class TransientApplication {
         }
 
         void cleanup() {
+            vkDestroyInstance(instance, nullptr);
             glfwDestroyWindow(window);
 
             glfwTerminate();
