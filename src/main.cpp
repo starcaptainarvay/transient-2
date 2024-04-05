@@ -26,6 +26,7 @@ class TransientApplication {
         VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
         VkDevice device = VK_NULL_HANDLE;
         VkQueue graphicsQueue = VK_NULL_HANDLE;
+        VkQueue presentQueue = VK_NULL_HANDLE;
         VkInstance instance;
         VkSurfaceKHR surface;
 
@@ -69,6 +70,7 @@ class TransientApplication {
 
             // Initialize graphics queue
             vkGetDeviceQueue(device, indices.graphicsFamily.value(), 0, &graphicsQueue);
+            vkGetDeviceQueue(device, indices.presentFamily.value(), 0, &presentQueue);
 
             // VkPhysicalDeviceProperties props = getPhysicalDeviceProperties(&physicalDevice);
 
