@@ -24,6 +24,8 @@ class TransientApplication {
     private:
         GLFWwindow* window;
         VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
+        VkDevice device = VK_NULL_HANDLE;
+        VkQueue graphicsQueue = VK_NULL_HANDLE;
         VkInstance instance;
         
         void initWindow() {
@@ -52,12 +54,15 @@ class TransientApplication {
         void initVulkan() {
             createInstance(&instance);
             pickPhysicalDevice(&instance, &physicalDevice);
+            QueueFamilyIndices indices = createLogicalDevice(&device, &physicalDevice);
 
-            VkPhysicalDeviceProperties props = getPhysicalDeviceProperties(&physicalDevice);            
+            vkGetDeviceQueue(device, indices.graphicsFamily.value(), 0, &graphicsQueue);
+
+            VkPhysicalDeviceProperties props = getPhysicalDeviceProperties(&physicalDevice);
             printPhysicalDeviceInfo(props);
 
-            QueueFamilyIndices queueIndices = findQueueFamilies(physicalDevice);
-            printf("Graphics family index: %d\n", queueIndices.graphicsFamily);
+            // QueueFamilyIndices queueIndices = findQueueFamilies(physicalDevice);
+            // printf("Graphics family index: %d\n", queueIndices.graphicsFamily);
         }
 
         void mainLoop() {
@@ -68,6 +73,7 @@ class TransientApplication {
 
         void cleanup() {
             vkDestroyInstance(instance, nullptr);
+            vkDestroyDevice(device, nullptr);
             glfwDestroyWindow(window);
 
             glfwTerminate();
