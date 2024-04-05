@@ -27,6 +27,14 @@ class TransientApplication {
         VkDevice device = VK_NULL_HANDLE;
         VkQueue graphicsQueue = VK_NULL_HANDLE;
         VkInstance instance;
+        VkSurfaceKHR surface;
+
+        void createSurface() {
+            if (glfwCreateWindowSurface(instance, window, nullptr, &surface) != VK_SUCCESS) {
+                throw std::runtime_error("failed to create window surface!");
+            }
+        }
+
         
         void initWindow() {
             glfwInit();
@@ -53,13 +61,16 @@ class TransientApplication {
 
         void initVulkan() {
             createInstance(&instance);
-            pickPhysicalDevice(&instance, &physicalDevice);
-            QueueFamilyIndices indices = createLogicalDevice(&device, &physicalDevice);
+            createSurface();
 
+            pickPhysicalDevice(&instance, &physicalDevice);
+            printPhysicalDeviceInfo(&physicalDevice);
+            QueueFamilyIndices indices = createLogicalDevice(&device, &physicalDevice, &surface);
+
+            // Initialize graphics queue
             vkGetDeviceQueue(device, indices.graphicsFamily.value(), 0, &graphicsQueue);
 
-            VkPhysicalDeviceProperties props = getPhysicalDeviceProperties(&physicalDevice);
-            printPhysicalDeviceInfo(props);
+            // VkPhysicalDeviceProperties props = getPhysicalDeviceProperties(&physicalDevice);
 
             // QueueFamilyIndices queueIndices = findQueueFamilies(physicalDevice);
             // printf("Graphics family index: %d\n", queueIndices.graphicsFamily);
@@ -72,6 +83,7 @@ class TransientApplication {
         }
 
         void cleanup() {
+            vkDestroySurfaceKHR(instance, surface, nullptr);
             vkDestroyInstance(instance, nullptr);
             vkDestroyDevice(device, nullptr);
             glfwDestroyWindow(window);

@@ -64,7 +64,7 @@ void pickPhysicalDevice(VkInstance *pInstance, VkPhysicalDevice *pDevice) {
     }
 }
 
-QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device) {
+QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device, VkSurfaceKHR surface) {
     QueueFamilyIndices indices;
 
     uint32_t queueFamilyCount = 0;
@@ -79,7 +79,18 @@ QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device) {
 
         if (queueFamily.queueFlags & VK_QUEUE_GRAPHICS_BIT) {
             indices.graphicsFamily = i;
+            printf("Queue families[%d] offers Graphics\n", i);
         }
+
+        // else {
+        VkBool32 presentSupport = false;
+        vkGetPhysicalDeviceSurfaceSupportKHR(device, i, surface, &presentSupport);
+
+        if (presentSupport) {
+            indices.presentFamily = i;
+            printf("Queue families[%d] offers Presentation\n", i);
+        }
+        // }
 
         if (indices.isComplete()) {
             break;
@@ -91,8 +102,8 @@ QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device) {
     return indices;
 }
 
-QueueFamilyIndices createLogicalDevice(VkDevice *pDevice, VkPhysicalDevice *pPhysicalDevice) {
-    QueueFamilyIndices indices = findQueueFamilies(*pPhysicalDevice);
+QueueFamilyIndices createLogicalDevice(VkDevice *pDevice, VkPhysicalDevice *pPhysicalDevice, VkSurfaceKHR *surface) {
+    QueueFamilyIndices indices = findQueueFamilies(*pPhysicalDevice, *surface);
 
     VkDeviceQueueCreateInfo queueCreateInfo{};
     queueCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
