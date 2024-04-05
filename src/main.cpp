@@ -55,6 +55,9 @@ class TransientApplication {
 
             VkPhysicalDeviceProperties props = getPhysicalDeviceProperties(&physicalDevice);            
             printPhysicalDeviceInfo(props);
+
+            QueueFamilyIndices queueIndices = findQueueFamilies(physicalDevice);
+            printf("Graphics family index: %d\n", queueIndices.graphicsFamily);
         }
 
         void mainLoop() {
