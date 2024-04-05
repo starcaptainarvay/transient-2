@@ -1,9 +1,11 @@
 #include <vulkan/vulkan.h>
 #include <GLFW/glfw3.h>
-#include <stdexcept>
 
 #include "vulkan_pipeline_utils.h"
+
+#include <stdexcept>
 #include <vector>
+#include <optional>
 
 void createInstance(VkInstance *pInstance) {
     VkApplicationInfo appInfo{};
@@ -60,4 +62,14 @@ void pickPhysicalDevice(VkInstance *pInstance, VkPhysicalDevice *pDevice) {
     if (*pDevice == VK_NULL_HANDLE) {
         throw std::runtime_error("failed to find a suitable GPU!");
     }
+}
+
+struct QueueFamilyIndices {
+    std::optional<uint32_t> graphicsFamily;
+};
+
+QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device) {
+    QueueFamilyIndices indices;
+    
+    return indices;
 }

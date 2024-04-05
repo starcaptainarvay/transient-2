@@ -53,10 +53,8 @@ class TransientApplication {
             createInstance(&instance);
             pickPhysicalDevice(&instance, &physicalDevice);
 
-            // printf("Hello world");
-
             VkPhysicalDeviceProperties props = getPhysicalDeviceProperties(&physicalDevice);            
-            printPhysicalDeviceFeatures(props, getPhysicalDeviceFeatures(&physicalDevice));
+            printPhysicalDeviceInfo(props);
         }
 
         void mainLoop() {
