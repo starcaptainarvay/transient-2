@@ -33,9 +33,9 @@ public class ColinMovie {
     protected void start(PApplet papp, String filename, int velocity, boolean fullScreen) {
         movie = new Movie(papp, filename);
         timeScale = Math.min(((float) velocity)/127 * 2 + .4, 4);
-        if (DEBUG) {
-          println(this.timeScale);
-        }
+        //if (DEBUG) {
+        //  println(this.timeScale);
+        //}
         
         x = ((int) random(2540)) + 10;
         y = ((int) random(1060)) + 10;
@@ -106,9 +106,9 @@ public class ColinMovie {
                 image(movie, x*2, y*2);//, (int) (72 + extra * 72), (int) (128 + extra * 128));
             }
         } catch (ArrayIndexOutOfBoundsException e) {
-            if (DEBUG) {
-              println("Daaayyuu- aw...");
-            }
+            //if (DEBUG) {
+            //  println("Daaayyuu- aw...");
+            //}
         }
     }
 
@@ -122,12 +122,12 @@ public class ColinMovie {
     }
 }
 
-public class colinImage extends colinMovie {
+public class ColinImage extends ColinMovie {
     protected float timeScale;
     private PImage image;
     private int startMillis;
 
-    public colinImage(PApplet papp, String note, int velocity, int r, int g, int b, boolean fullScreen) {
+    public ColinImage(PApplet papp, String note, int velocity, int r, int g, int b, boolean fullScreen) {
         super(papp, note, velocity, r, g, b, fullScreen);
     }
 
@@ -163,7 +163,7 @@ public class colinImage extends colinMovie {
     }
 
     @Override
-    public boolean pauseIfOver() {
+    public boolean isOver() {
       return (progress() >= 0.8);
     }
 }

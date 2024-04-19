@@ -8,8 +8,7 @@ import java.util.NoSuchElementException;
 import java.util.Arrays;
 import java.nio.file.Paths;
 
-ConcurrentHashMap<String, colinMovie> active_movies;
-MovieGroups movie_groups;
+ConcurrentHashMap<String, ColinMovie> active_movies;
 PianoController piano_reader;
 
 final static int MAX_ACTIVE_MOVIES = 10;
@@ -21,8 +20,8 @@ void setup() {
     frameRate(24);
     fullScreen();
 
-    active_movies = new ConcurrentHashMap<String, colinMovie>();
-    piano_reader = new PianoController();
+    active_movies = new ConcurrentHashMap<String, ColinMovie>();
+    piano_reader = new PianoController(this);
 }
 
 /* Runs 24 times per second, when possible */
@@ -43,9 +42,9 @@ void draw() {
         double[] current_color = piano_reader.getCurrentColor();
         for (String pitch : piano_reader.getKeysReleased()) {
             for (String key : active_movies.keySet()) {
-                if (key.startsWith(note)) {
+                if (key.startsWith(pitch)) {
                     ColinMovie movie = active_movies.get(key);
-                    movie.setTargetColor(current_color[0], current_color[1], current_color[2])
+                    movie.setTargetColor(current_color[0], current_color[1], current_color[2]);
                 }
             }
         }

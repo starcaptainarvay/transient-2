@@ -2,7 +2,7 @@
 class PianoController {
 
     /* JSON client stuff */
-    private final static JSON_STREAM_DELIMITER = "<!>";
+    private final static String JSON_STREAM_DELIMITER = "<!>";
 
     private Client client;
     private String data_buffer;
@@ -13,20 +13,23 @@ class PianoController {
     private MovieGroups movie_groups;
 
     private double[] current_color;
+    
+    private optimized2 parent;
 
-    public PianoController() {
-        client = new Client(this, "127.0.0.1", 3000);
+    public PianoController(optimized2 parent) {
+        this.parent = parent;
+        client = new Client(parent, "127.0.0.1", 3000);
         data_buffer = "";
-        current_color = {0, 0, 0};
+        current_color = new double[]{0, 0, 0};
 
-        pressed_keys = new ArrayList<String>();
+        pressed_keys = new ArrayList<ColinMovie>();
         released_keys = new ArrayList<String>();
         movie_groups = new MovieGroups();
     }
 
     /* Update internal pressed_keys and released_keys. Return true if a message was read */
     public boolean readClient() {
-        if (!client.available()) return false;
+        if (client.available() == 0) return false;
 
         String tmp = client.readString();
 
@@ -38,13 +41,13 @@ class PianoController {
         String[] incoming = data_buffer.split(JSON_STREAM_DELIMITER);
 
         if (data_buffer.endsWith(JSON_STREAM_DELIMITER)) { // message was not split
-            for (int i = 0; i < incoming.length, i++) {
+            for (int i = 0; i < incoming.length; i++) {
                 JSONObject e = parseJSONObject(incoming[i]);
                 processKeyEvent(e);
             }
             data_buffer = "";
         } else {
-            for (int i = 0; i < incoming.length - 1, i++) {
+            for (int i = 0; i < incoming.length - 1; i++) {
                 JSONObject e = parseJSONObject(incoming[i]);
                 processKeyEvent(e);
             }
@@ -74,14 +77,14 @@ class PianoController {
 
                 String filename = movie_groups.getFileName(pitch, velocity);
                 boolean fullscreen = movie_groups.isFullscreen(pitch);
-                ColinMovie new_movie = new ColinMovie(this, filename, velocity, r + offset(6), g + offset(6), b + offset(6), fullscreen);
+                ColinMovie new_movie = new ColinMovie(this.parent, filename, velocity, r + offset(6), g + offset(6), b + offset(6), fullscreen);
                 pressed_keys.add(new_movie);
             }
         }
 
         JSONArray arr2 = object.getJSONArray("notes_released");
         for (int i = 0; i < arr2.size(); i++) {
-            String note = arr2.getString();
+            String note = arr2.getString(i);
             released_keys.add(note);
         }
     }
@@ -96,8 +99,8 @@ class PianoController {
     }
 
     /* Return pressed_keys filename list and clear it */
-    public ArrayList<String> getKeysPressed() {
-        ArrayList<String> pressed_keys_out = (ArrayList<String>) pressed_keys.clone();
+    public ArrayList<ColinMovie> getKeysPressed() {
+        ArrayList<ColinMovie> pressed_keys_out = (ArrayList<ColinMovie>) pressed_keys.clone();
         pressed_keys.clear();
         return pressed_keys_out;
     }
@@ -139,8 +142,8 @@ class PianoController {
 
         /* Get a file name corresponding to a given pitch and velocity */
         public String getFileName(String pitch, int velocity) {
-            pitch_group_num = note_group_map.get(pitch - 1);
-            pitch_group = pitch_groups.get(pitch_group_num);
+            int pitch_group_num = note_group_map.get(pitch) - 1;
+            PitchGroup pitch_group = pitch_groups.get(pitch_group_num);
             return pitch_group.getFileName(velocity);
         }
 
@@ -158,13 +161,13 @@ class PianoController {
             private ArrayList<ArrayList<String>> velocity_groups;
 
             public PitchGroup(int pitch_num) {
-                this.pitch_num = pitch_num;
+                this.pitch_group_num = pitch_num;
                 /* A velocity group is a list of filenames that correspond to the selected pitch and veloicty group numbers */
                 velocity_groups = new ArrayList<>(Arrays.asList(
-                    new ArrayList<String>,
-                    new ArrayList<String>,
-                    new ArrayList<String>,
-                    new ArrayList<String>
+                    new ArrayList<String>(),
+                    new ArrayList<String>(),
+                    new ArrayList<String>(),
+                    new ArrayList<String>()
                 ));
                 
                 /* Read file names */
@@ -172,7 +175,7 @@ class PianoController {
                 File[] file_list = data_folder.listFiles();
 
                 /* Assign file names to velocity groups */
-                for (int i = 0; i < file_list.length, i++) {
+                for (int i = 0; i < file_list.length; i++) {
                     if (file_list[i].isFile()) {
                         String filename = file_list[i].getName();
                         if (file_list[i].getName().length() > 13) {
