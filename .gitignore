@@ -18,6 +18,7 @@ mono_crash.*
 
 # Libraries/dependencies
 *.lib
+External\ Libraries/
 
 # Build results
 [Dd]ebug/
