@@ -11,13 +11,17 @@
 class TransientApplication {
     public:
         void run() {
-            printf("Initializing window.\n");
+            if (VERBOSE(1))
+                printf("Initializing window.\n");
             initWindow();
-            printf("Initializing Vulkan.\n");
+            if (VERBOSE(1))
+                printf("Initializing Vulkan.\n");
             initVulkan();
-            printf("Initializing Transient.\n");
+            if (VERBOSE(1))
+                printf("Initializing Transient.\n");
             mainLoop();
-            printf("Cleaning up Transient.");
+            if (VERBOSE(1))
+                printf("Cleaning up Transient.");
             cleanup();
         }
 
@@ -64,7 +68,7 @@ class TransientApplication {
             createInstance(&instance);
             createSurface();
 
-            pickPhysicalDevice(&instance, &physicalDevice);
+            pickPhysicalDevice(&instance, &physicalDevice, &surface);
             printPhysicalDeviceInfo(&physicalDevice);
             QueueFamilyIndices indices = createLogicalDevice(&device, &physicalDevice, &surface);
 
