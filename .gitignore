@@ -15,8 +15,11 @@
 
 # Mono auto generated files
 mono_crash.*
+
+# Visual Studio Project data files
 *.vcxproj
 *.vcxproj.filters
+*.sln
 
 # Libraries/dependencies
 *.lib
