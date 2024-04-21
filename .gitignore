@@ -18,7 +18,8 @@ mono_crash.*
 
 # Libraries/dependencies
 *.lib
-External\ Libraries/
+Transient-2/External\ Libraries/
+Transient-2/External\ Libraries\ Temp/
 
 # Build results
 [Dd]ebug/
