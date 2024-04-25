@@ -35,7 +35,7 @@ class PianoController {
 
         folder_nums = new HashMap<String, Integer>();
         /* Populate folder_nums with index 0. Will be incremented when a duplicate movie is attempted to be played */
-        File data_folder = new File("C:/Users/Transient/Documents/colinvideos_october_copy0");
+        File data_folder = new File("C:/Users/Transient/Documents/colinvideos_april_copy0");
         File[] file_list = data_folder.listFiles();
         for (int i = 0; i < file_list.length; i++) {
             if (file_list[i].isFile()) {
@@ -100,16 +100,25 @@ class PianoController {
                   println("Skipping this note");
                   continue;
                 }
-                boolean fullscreen = movie_groups.isFullscreen(pitch);
+                // boolean fullscreen = movie_groups.isFullscreen(filename);
 
                 /*  Because the folder index is specific to each individual file, it's okay to increment it every time the file is played.
                     This saves the time it would take to check for the filename in active_movies. */
                 int old_folder_num = folder_nums.get(filename);
                 int new_folder_num = (old_folder_num + 1) % MOVIE_FOLDER_COPIES;
                 folder_nums.replace(filename, new_folder_num);
-                String filepath = "C:/Users/Transient/Documents/colinvideos_october_copy" + Integer.toString(new_folder_num) + "/" + filename;
+                String filepath = "C:/Users/Transient/Documents/colinvideos_april_copy" + Integer.toString(new_folder_num) + "/" + filename;
 
-                ColinMovie new_movie = new ColinMovie(this.parent, filepath, pitch, velocity, r + offset(6), g + offset(6), b + offset(6), fullscreen);
+                ColinMovie new_movie;
+                println("About to check ending of ", filename);
+                if (filename.endsWith("png")) {
+                  println("png");
+                    new_movie = new ColinImage(this.parent, filepath, pitch, velocity, r + offset(6), g + offset(6), b + offset(6));
+                } else { // mov
+                println("mov");
+                    new_movie = new ColinMovie(this.parent, filepath, pitch, velocity, r + offset(6), g + offset(6), b + offset(6)/*, fullscreen*/);
+                }
+                println("nothing");
                 pressed_keys.add(new_movie);
             }
         }
@@ -257,8 +266,10 @@ class PianoController {
         }
 
         /* Return whether a movie/image within a given pitch group should be fullscreen */
-        public boolean isFullscreen(String pitch) {
-            return (note_group_map.get(pitch) == 1);
+        public boolean isFullscreen(String filename) {
+            // return filename.endsWith("png");
+            // return (note_group_map.get(pitch) == 1);
+            return false;
         }
 
         /* Maps a velocity to a list of filenames for corresponding movie files. */
@@ -280,7 +291,7 @@ class PianoController {
                 ));
                 
                 /* Read file names */
-                File data_folder = new File("C:/Users/Transient/Documents/colinvideos_october_copy0");
+                File data_folder = new File("C:/Users/Transient/Documents/colinvideos_april_copy0");
                 File[] file_list = data_folder.listFiles();
 
                 /* Assign file names to velocity groups */
