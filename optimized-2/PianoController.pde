@@ -157,6 +157,14 @@ class PianoController {
 
             /* Initialize the map of note Strings to pitch group numbers */
             note_group_map = new HashMap<String, Integer>();
+            note_group_map.put("E1",  1);
+            note_group_map.put("F1",  1);
+            note_group_map.put("F#1",  1);
+            note_group_map.put("G1",  1);
+            note_group_map.put("G#1",  1);
+            note_group_map.put("A1",  1);
+            note_group_map.put("A#1",  1);
+            note_group_map.put("B1",  1);
             note_group_map.put("C2",  1);
             note_group_map.put("C#2", 1);
             note_group_map.put("D2",  1);
@@ -169,10 +177,10 @@ class PianoController {
             note_group_map.put("A2",  1);
             note_group_map.put("A#2", 1);
             note_group_map.put("B2",  1);
-            note_group_map.put("C3",  1);
-            note_group_map.put("C#3", 1);
-            note_group_map.put("D3",  1);
-            note_group_map.put("D#3", 1);
+            note_group_map.put("C3",  2);
+            note_group_map.put("C#3", 2);
+            note_group_map.put("D3",  2);
+            note_group_map.put("D#3", 2);
             note_group_map.put("E3",  2);
             note_group_map.put("F3",  2);
             note_group_map.put("F#3", 2);
@@ -218,6 +226,13 @@ class PianoController {
             note_group_map.put("A#6", 4);
             note_group_map.put("B6",  4);
             note_group_map.put("C7",  4);
+            note_group_map.put("C#7",  4);
+            note_group_map.put("D7",  4);
+            note_group_map.put("D#7",  4);
+            note_group_map.put("E7",  4);
+            note_group_map.put("F7",  4);
+            note_group_map.put("F#7",  4);
+            note_group_map.put("G7",  4);
 
             /* Initialize the list of PitchGroup objects */
             pitch_groups = new ArrayList<>(Arrays.asList(

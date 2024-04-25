@@ -24,7 +24,7 @@ void setup() {
     imageMode(CENTER);
     frameRate(24);
     noSmooth();
-    fullScreen(P2D);
+    fullScreen(P2D, 1);
 
     active_movies = new ConcurrentHashMap<String, ColinMovie>();
     piano_reader = new PianoController(this);
