@@ -108,9 +108,9 @@ public class ColinMovie {
                 image(movie, width/2, height/2);
                 // scale(0.5);
             } else {
-                scale(0.333);
-                image(movie, x*3, y*3);//, (int) (72 + extra * 72), (int) (128 + extra * 128));
-                scale(3);
+                scale(1.0/COLIN_SCALING);
+                image(movie, x*COLIN_SCALING, y*COLIN_SCALING);//, (int) (72 + extra * 72), (int) (128 + extra * 128));
+                scale(COLIN_SCALING);
             }
         } catch (ArrayIndexOutOfBoundsException e) {
             //if (DEBUG) {
@@ -159,9 +159,9 @@ public class ColinImage extends ColinMovie {
     public void drawMovie() {
         updateColor();
         // scale(2);
-        scale(0.5);
-        image(image, x*2, y*2);
-        scale(2);
+        scale(1/COLIN_SCALING);
+        image(image, x*COLIN_SCALING, y*COLIN_SCALING);
+        scale(COLIN_SCALING);
         // scale(0.5);
     }
 

@@ -15,12 +15,13 @@ final static int MAX_ACTIVE_MOVIES = 30;
 final static int MOVIE_WIDTH = 853/2;
 final static int MOVIE_HEIGHT = 480/2;
 final static int MOVIE_FOLDER_COPIES = 5;
-final static int WIDTH = 1920;
-final static int HEIGHT = 647;
+final static int WIDTH = 1400; //1920;
+final static int HEIGHT = 472; //1080; //647;+
+final static float COLIN_SCALING = 5.0; // 1/COLIN_SCALING is the size of the videos
 
 /* One-time setup at startup. */
 void setup() {
-    size(1920, 647, P2D);
+    size(1400, 1050, P2D);
     imageMode(CENTER);
     frameRate(24);
     noSmooth();
@@ -34,6 +35,8 @@ void setup() {
 void draw() {
     /* Black background */
     background(0);
+        translate(0, (1050 - HEIGHT) / 2);
+
     fill(255);
     rect(0,0,WIDTH,HEIGHT);
     // scale(0.5);
