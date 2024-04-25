@@ -11,6 +11,8 @@ class PianoController {
     private ArrayList<ColinMovie> pressed_keys;
     private ArrayList<String> released_keys;
     private MovieGroups movie_groups;
+    // private ArrayList<MovieGroups> movie_groups_arr;
+    private HashMap<String, Integer> folder_nums;
 
     private double[] current_color;
     
@@ -24,7 +26,23 @@ class PianoController {
 
         pressed_keys = new ArrayList<ColinMovie>();
         released_keys = new ArrayList<String>();
+
+        // movie_groups_arr = new ArrayList<MovieGroups>();
+        // for (int i = 0; i < MOVIE_FOLDER_COPIES; i++) {
+        //     movie_groups_arr.add(new MovieGroups(i));
+        // }
         movie_groups = new MovieGroups();
+
+        folder_nums = new HashMap<String, Integer>();
+        /* Populate folder_nums with index 0. Will be incremented when a duplicate movie is attempted to be played */
+        File data_folder = new File("C:/Users/Transient/Documents/colinvideos_october_copy0");
+        File[] file_list = data_folder.listFiles();
+        for (int i = 0; i < file_list.length; i++) {
+            if (file_list[i].isFile()) {
+                String filename = file_list[i].getName();
+                folder_nums.put(filename, 0);
+            }
+        }
     }
 
     /* Update internal pressed_keys and released_keys. Return true if a message was read */
@@ -70,14 +88,28 @@ class PianoController {
             current_color[1] = (double) g;
             current_color[2] = (double) b;
 
+            // println("Set current color to ", r, g, b);
+
             for (int i = 0; i < arr.size(); i++) {
                 JSONArray note = arr.getJSONArray(i);
                 String pitch = note.getString(0);
                 int velocity = note.getInt(1);
 
                 String filename = movie_groups.getFileName(pitch, velocity);
+                if (filename == null) {
+                  println("Skipping this note");
+                  continue;
+                }
                 boolean fullscreen = movie_groups.isFullscreen(pitch);
-                ColinMovie new_movie = new ColinMovie(this.parent, filename, velocity, r + offset(6), g + offset(6), b + offset(6), fullscreen);
+
+                /*  Because the folder index is specific to each individual file, it's okay to increment it every time the file is played.
+                    This saves the time it would take to check for the filename in active_movies. */
+                int old_folder_num = folder_nums.get(filename);
+                int new_folder_num = (old_folder_num + 1) % MOVIE_FOLDER_COPIES;
+                folder_nums.replace(filename, new_folder_num);
+                String filepath = "C:/Users/Transient/Documents/colinvideos_october_copy" + Integer.toString(new_folder_num) + "/" + filename;
+
+                ColinMovie new_movie = new ColinMovie(this.parent, filepath, pitch, velocity, r + offset(6), g + offset(6), b + offset(6), fullscreen);
                 pressed_keys.add(new_movie);
             }
         }
@@ -98,7 +130,7 @@ class PianoController {
         return current_color;
     }
 
-    /* Return pressed_keys filename list and clear it */
+    /* Return pressed_keys movie list and clear it */
     public ArrayList<ColinMovie> getKeysPressed() {
         ArrayList<ColinMovie> pressed_keys_out = (ArrayList<ColinMovie>) pressed_keys.clone();
         pressed_keys.clear();
@@ -124,12 +156,68 @@ class PianoController {
         public MovieGroups() {
 
             /* Initialize the map of note Strings to pitch group numbers */
-            note_group_map = Map.of(
-                "C2",  1, "C#2", 1, "D2",  1, "D#2", 1, "E2",  1, "F2",  1, "F#2", 1, "G2",  1, "G#2", 1, "A2",  1, "A#2", 1, "B2",  1, "C3",  1, "C#3", 1, "D3",  1, "D#3", 1, 
-                "E3",  2, "F3",  2, "F#3", 2, "G3",  2, "G#3", 2, "A3",  2, "A#3", 2, "B3",  2, "C4",  2, "C#4", 2, "D4",  2, "D#4", 2, "E4",  2, "F4",  2, "F#4", 2, "G4",  2,
-                "G#4", 3, "A4",  3, "A#4", 3, "B4",  3, "C5",  3, "C#5", 3, "D5",  3, "D#5", 3, "E5",  3, "F5",  3, "F#5", 3, "G5",  3, "G#5", 3,
-                "A5",  4, "A#5", 4, "B5",  4, "C6",  4, "C#6", 4, "D6",  4, "D#6", 4, "E6",  4, "F6",  4, "F#6", 4, "G6",  4, "G#6", 4, "A6",  4, "A#6", 4, "B6",  4, "C7",  4
-            );
+            note_group_map = new HashMap<String, Integer>();
+            note_group_map.put("C2",  1);
+            note_group_map.put("C#2", 1);
+            note_group_map.put("D2",  1);
+            note_group_map.put("D#2", 1);
+            note_group_map.put("E2",  1);
+            note_group_map.put("F2",  1);
+            note_group_map.put("F#2", 1);
+            note_group_map.put("G2",  1);
+            note_group_map.put("G#2", 1);
+            note_group_map.put("A2",  1);
+            note_group_map.put("A#2", 1);
+            note_group_map.put("B2",  1);
+            note_group_map.put("C3",  1);
+            note_group_map.put("C#3", 1);
+            note_group_map.put("D3",  1);
+            note_group_map.put("D#3", 1);
+            note_group_map.put("E3",  2);
+            note_group_map.put("F3",  2);
+            note_group_map.put("F#3", 2);
+            note_group_map.put("G3",  2);
+            note_group_map.put("G#3", 2);
+            note_group_map.put("A3",  2);
+            note_group_map.put("A#3", 2);
+            note_group_map.put("B3",  2);
+            note_group_map.put("C4",  2);
+            note_group_map.put("C#4", 2);
+            note_group_map.put("D4",  2);
+            note_group_map.put("D#4", 2);
+            note_group_map.put("E4",  2);
+            note_group_map.put("F4",  2);
+            note_group_map.put("F#4", 2);
+            note_group_map.put("G4",  2);
+            note_group_map.put("G#4", 3);
+            note_group_map.put("A4",  3);
+            note_group_map.put("A#4", 3);
+            note_group_map.put("B4",  3);
+            note_group_map.put("C5",  3);
+            note_group_map.put("C#5", 3);
+            note_group_map.put("D5",  3);
+            note_group_map.put("D#5", 3);
+            note_group_map.put("E5",  3);
+            note_group_map.put("F5",  3);
+            note_group_map.put("F#5", 3);
+            note_group_map.put("G5",  3);
+            note_group_map.put("G#5", 3);
+            note_group_map.put("A5",  4);
+            note_group_map.put("A#5", 4);
+            note_group_map.put("B5",  4);
+            note_group_map.put("C6",  4);
+            note_group_map.put("C#6", 4);
+            note_group_map.put("D6",  4);
+            note_group_map.put("D#6", 4);
+            note_group_map.put("E6",  4);
+            note_group_map.put("F6",  4);
+            note_group_map.put("F#6", 4);
+            note_group_map.put("G6",  4);
+            note_group_map.put("G#6", 4);
+            note_group_map.put("A6",  4);
+            note_group_map.put("A#6", 4);
+            note_group_map.put("B6",  4);
+            note_group_map.put("C7",  4);
 
             /* Initialize the list of PitchGroup objects */
             pitch_groups = new ArrayList<>(Arrays.asList(
@@ -142,7 +230,13 @@ class PianoController {
 
         /* Get a file name corresponding to a given pitch and velocity */
         public String getFileName(String pitch, int velocity) {
-            int pitch_group_num = note_group_map.get(pitch) - 1;
+            int pitch_group_num;
+          try {
+              pitch_group_num = note_group_map.get(pitch) - 1;
+            } catch (NullPointerException e) {
+              println("Pitch out of range!");
+              return null;
+            }
             PitchGroup pitch_group = pitch_groups.get(pitch_group_num);
             return pitch_group.getFileName(velocity);
         }
@@ -171,7 +265,7 @@ class PianoController {
                 ));
                 
                 /* Read file names */
-                File data_folder = new File("C:/colin-project/data/");
+                File data_folder = new File("C:/Users/Transient/Documents/colinvideos_october_copy0");
                 File[] file_list = data_folder.listFiles();
 
                 /* Assign file names to velocity groups */
@@ -183,6 +277,7 @@ class PianoController {
                             int vel_num = Integer.parseInt(filename.substring(10,11));
                             if (pitch_group_num == this.pitch_group_num) {
                                 velocity_groups.get(vel_num-1).add(filename);
+                                 println("I just added ", filename, "to pg ", pitch_group_num, " vg ", vel_num);
                             }
                         }
                     }

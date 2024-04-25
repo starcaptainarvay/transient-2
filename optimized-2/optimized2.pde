@@ -11,14 +11,20 @@ import java.nio.file.Paths;
 ConcurrentHashMap<String, ColinMovie> active_movies;
 PianoController piano_reader;
 
-final static int MAX_ACTIVE_MOVIES = 10;
+final static int MAX_ACTIVE_MOVIES = 20;
+final static int MOVIE_WIDTH = 853/2;
+final static int MOVIE_HEIGHT = 480/2;
+final static int MOVIE_FOLDER_COPIES = 5;
+final static int WIDTH = 1920;
+final static int HEIGHT = 647;
 
 /* One-time setup at startup. */
 void setup() {
-    size(1920, 1080);
+    size(1920, 647, P2D);
     imageMode(CENTER);
     frameRate(24);
-    fullScreen();
+    noSmooth();
+    fullScreen(P2D);
 
     active_movies = new ConcurrentHashMap<String, ColinMovie>();
     piano_reader = new PianoController(this);
@@ -28,6 +34,9 @@ void setup() {
 void draw() {
     /* Black background */
     background(0);
+    fill(255);
+    rect(0,0,WIDTH,HEIGHT);
+    // scale(0.5);
 
     /* Update list of active movies */
     if (piano_reader.readClient()) {
@@ -60,8 +69,8 @@ void draw() {
     }
 
     /* Display frame rate */
-    fill(255);
-    text(frameRate, 30, 30);
+    //fill(255);
+    //text(frameRate, 30, 30);
 }
 
 /* ??? */
