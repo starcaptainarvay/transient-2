@@ -110,15 +110,11 @@ class PianoController {
                 String filepath = "C:/Users/Transient/Documents/colinvideos_april_copy" + Integer.toString(new_folder_num) + "/" + filename;
 
                 ColinMovie new_movie;
-                println("About to check ending of ", filename);
                 if (filename.endsWith("png")) {
-                  println("png");
                     new_movie = new ColinImage(this.parent, filepath, pitch, velocity, r + offset(6), g + offset(6), b + offset(6));
                 } else { // mov
-                println("mov");
                     new_movie = new ColinMovie(this.parent, filepath, pitch, velocity, r + offset(6), g + offset(6), b + offset(6)/*, fullscreen*/);
                 }
-                println("nothing");
                 pressed_keys.add(new_movie);
             }
         }

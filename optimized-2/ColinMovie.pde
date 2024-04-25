@@ -32,7 +32,6 @@ public class ColinMovie {
     }
 
     protected void start(PApplet papp, String filename, String pitch, int velocity/*, boolean fullScreen*/) {
-      println("New movie");
     //   println("Looking up movie with filename: ", filename); 
         movie = new Movie(papp, filename); 
         timeScale = Math.min(((float) velocity)/127 * 2 + .4, 4);
@@ -54,7 +53,6 @@ public class ColinMovie {
 
     // added for transient 2
     public void play() {
-      println("About to try to play movie with filename ", filename);
         movie.play();
     }
     
@@ -110,9 +108,9 @@ public class ColinMovie {
                 image(movie, width/2, height/2);
                 // scale(0.5);
             } else {
-                scale(0.5);
-                image(movie, x*2, y*2);//, (int) (72 + extra * 72), (int) (128 + extra * 128));
-                scale(2);
+                scale(0.333);
+                image(movie, x*3, y*3);//, (int) (72 + extra * 72), (int) (128 + extra * 128));
+                scale(3);
             }
         } catch (ArrayIndexOutOfBoundsException e) {
             //if (DEBUG) {
@@ -144,7 +142,6 @@ public class ColinImage extends ColinMovie {
 
     @Override
     protected void start(PApplet papp, String note, String pitch, int velocity/*, boolean fullScreen*/) {
-      println("Creating image");
         image = loadImage(note);
         timeScale = Math.min(((float) velocity)/127 * 2 + .4, 4);
         startMillis = millis();

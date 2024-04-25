@@ -11,7 +11,7 @@ import java.nio.file.Paths;
 ConcurrentHashMap<String, ColinMovie> active_movies;
 PianoController piano_reader;
 
-final static int MAX_ACTIVE_MOVIES = 20;
+final static int MAX_ACTIVE_MOVIES = 30;
 final static int MOVIE_WIDTH = 853/2;
 final static int MOVIE_HEIGHT = 480/2;
 final static int MOVIE_FOLDER_COPIES = 5;
