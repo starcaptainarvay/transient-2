@@ -10,7 +10,10 @@ public class ColinMovie {
     private int y;
     private float extra;
     protected float timeScale;
-     protected boolean fullScreen;
+    protected boolean fullScreen;
+    
+    private static final double BRIGHTNESS_SCALE = 1;
+    private static final int BRIGHTNESS_OFFSET = 0;
     
     private double r;
     private double g;
@@ -93,9 +96,16 @@ public class ColinMovie {
         g = lerp(g, g1, n);
         b = lerp(b, b1, n);
     }
+    
+    private int clamp(int n, int a, int b) {
+        return max(min(n, b), a);
+    }
 
     public void updateColor() {
-        tint((int) r, (int) g, (int) b, calcOpacity());
+        tint(
+          (int) (r * BRIGHTNESS_SCALE) + BRIGHTNESS_OFFSET, 
+          (int) (g * BRIGHTNESS_SCALE) + BRIGHTNESS_OFFSET,
+          (int) (b * BRIGHTNESS_SCALE) + BRIGHTNESS_OFFSET, calcOpacity());
         lerpColor(.2);
     }
 

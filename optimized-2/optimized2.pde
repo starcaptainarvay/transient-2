@@ -34,12 +34,12 @@ void setup() {
 /* Runs 24 times per second, when possible */
 void draw() {
     /* Black background */
-    background(0);
+    background(30);
         translate(0, (1050 - HEIGHT) / 2);
 
-    fill(255);
-    rect(0,0,WIDTH,HEIGHT);
-    // scale(0.5);
+     //fill(255);
+     //rect(0,0,WIDTH,HEIGHT);
+     //scale(0.5);
 
     /* Update list of active movies */
     if (piano_reader.readClient()) {
